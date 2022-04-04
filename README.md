@@ -164,3 +164,161 @@ int opcion3(FILE *myfile,char *filename)
     }
     return 0;
 }
+int opcion4(FILE *myfile,char *filename)
+{
+    int opcion;
+    printf(" 1. Agregar una seccion\n 2. Quitar un seccion\n 3. Volver\n");
+    printf("Elige una opcion\n");
+    scanf("%i",&opcion);
+    switch(opcion)
+    {
+        case 1:
+            printf("Para agregar una sección debes rellenar todos los campos del libro\n");
+            agregar_libro(myfile);
+            printf(" \ns¡Seccion agrgada con exito!");
+            break;
+        case 2:
+            quitar_seccion(myfile,filename);
+            break;
+        case 3:
+            break;
+        default:
+            printf("Ups, esa opcion no esta, intenta con otra\n");
+            opcion4(myfile,filename);
+            break;
+
+    }
+    return 0;
+}
+
+int opcion5(FILE *myfile,char *filename)
+{
+    int opcion;
+    printf(" 1. Agregar un piso\n 2. Quitar un piso\n 3. Volver\n");
+    printf("Elige una opcion:\n");
+    scanf("%i",&opcion);
+    switch(opcion)
+    {
+        case 1:
+            printf("Para agregar un piso debes rellenar todos los campos del libro\n");
+            agregar_libro(myfile);
+            printf("\n¡Piso agregado con exito!");
+            break;
+        case 2:
+            quitar_piso(myfile,filename);
+            break;
+        case 3:
+            break;
+        default:
+            printf("Ups, esa opcion no esta, intenta con otra\n");
+            opcion5(myfile,filename);
+            break;
+
+    }
+    return 0;
+}
+
+void opcion6(FILE *myfile)
+{
+    buscar_libro(myfile);
+}
+
+
+void opcion8(int argc, char *argv[])
+{
+  FILE *fp = openingFile(argv[1]);
+  libro_index(fp);
+  int opcion;
+  printf("\n¿Quieres volver al menu?(Ingresa 1 para si y 2 para no)\n");
+  scanf("%i",&opcion);
+  switch(opcion)
+  {
+    case 1:
+    main(argc,argv);
+    case 2:
+      break;
+    default:
+      printf("hola");
+      opcion8(argc,argv);
+      break;
+  
+    
+      }  
+    return;
+    }
+
+int agregar_libro(FILE *myfile)
+{
+
+    char libro[70],autor[50],seccion[50],edificio[4],sede[50];
+    int anio,nestante,piso;
+
+    if (!myfile) {
+        printf("Can't open file\n");
+        return 0;
+    }
+    printf("\nIngresa el nombre del libro (Los espacios se ingresan con guión bajo): \n");
+    scanf("%s", &libro);
+    printf("\nIngresa el nombre del autor:\n");
+    scanf("%s", &autor);
+    printf("\nIngresa el año del libro:\n");
+    scanf("%d", &anio);
+    printf("\nIngresa el numero del estante donde esta el libro:\n");
+    scanf("%d", &nestante);
+    printf("\nIngresa el tipo de seccion del libro:\n");
+    scanf("%s", &seccion);
+    printf("\nIngresa el piso donde esta el libro: \n");
+    scanf("%d", &piso);
+    printf("\nIngresa el edificio donde esta el libro:\n");
+    scanf("%s", &edificio);
+    printf("\nIngresa la sede donde esta el libro:\n");
+    scanf("%s", &sede);
+
+    fprintf(myfile, "%s, %s, %d,%d,%s,%d,%s,%s\n", libro,autor, anio,nestante,seccion,piso,edificio,sede);
+
+    printf("\n¡Nuevo libro agregado con exito!");
+
+    fclose(myfile);
+    return 0;
+}
+
+int buscar_libro(FILE *myfile)
+{
+    int index = 0;
+
+    if (myfile == NULL){
+        perror("El archivo está vacío");
+        exit(1);
+    }
+
+    display_info(myfile);
+
+
+}
+
+void libro_index(FILE *myfile){
+    printf("\n");
+    int threlin = 0;
+    char linea[200];
+
+    for (int i = 0 ;fgets(linea, sizeof(linea), myfile);i++)
+    {
+        char *token;
+        token = strtok(linea, "," );
+        if (i != 0){
+            if (threlin == 3){
+                printf("\n\n");
+                threlin = 0;
+            }
+            if(i < 10){
+                printf("[0%i]%s      ",i,token);
+            }
+            else{
+                printf("[%i]%s      ",i,token);
+            }
+
+            threlin++;
+        }
+    }
+    fclose(myfile);
+}
